@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DrAppointment from './../drAppointment/DrAppointment';
 
+
 const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
 
@@ -10,7 +11,7 @@ const Navbar = () => {
             <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
                 <div>
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                        <a href="javascript:void(0)">
+                        <a href="/">
                             <h2 className="text-2xl font-bold">LOGO</h2>
                         </a>
                         <div className="md:hidden">
@@ -104,9 +105,8 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <a
-                                    className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-                                    href="/"
-                                >
+                                    className="rounded-md bg-primary text-white px-5 py-2.5 text-sm font-medium  shadow"
+                                    href="page/loginPage/LoginPage" >
                                     Login
                                 </a>
                             </li>

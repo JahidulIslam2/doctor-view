@@ -4,7 +4,7 @@ const TestimonialCard = ({ cardInfo }) => {
     const { content, name, address, img } = cardInfo
     return (
         <div className="max-w-sm w-full rounded-lg justify-center items-center overflow-hidden shadow-lg shadow-darkblue mx-auto flex flex-col my-4 p-4 ">
-            <div className=""></div>
+
 
             <div className="flex-grow">
                 <p className="text-sm">

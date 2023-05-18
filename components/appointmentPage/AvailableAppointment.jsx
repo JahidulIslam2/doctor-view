@@ -1,8 +1,23 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
+import AvailableAppointmentCard from "./AvailableAppointmentCard";
+import BookingModal from "./BookingModal";
 
 const AvailableAppointment = ({ startDate }) => {
     const [slotData, setData] = useState([])
+    const [modalOpen, setModalOpen] = useState(false);
+    const [treatment, setTreatment] = useState({})
+
+    const openModal = (slotCardData) => {
+        setTreatment(slotCardData)
+        setModalOpen(true);
+    }
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+    const submitHandler = () => {
+        setModalOpen(false)
+    }
 
     useEffect(() => {
         fetch('/slot.json')
@@ -11,26 +26,31 @@ const AvailableAppointment = ({ startDate }) => {
 
     }, [])
 
-    console.log(slotData)
+
     return (
         <div>
-            <p className="text-primary font-bold">You picked {format(startDate, 'PP')}</p>
-            <div>
-                <div>
-                    {
-                        slotData?.map(slot => {
+            <p className="text-center text-primary font-bold text-2xl">Available service on {format(startDate, 'PP')}</p>
 
-                            <div >
-                                <h1>Pediatric present</h1>
-                                <p>time</p>
-                                <p>10 space</p>
-                                <button>Book Appointment</button>
-                            </div>
-                        })
-                    }
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 mx-auto gap-6">
+                {
+                    slotData?.map(slotCardData =>
+                        <AvailableAppointmentCard
+                            slotCardData={slotCardData}
+                            key={slotCardData.id}
+                            openModal={openModal}
+                        ></AvailableAppointmentCard>
+                    )
+                }
 
-                </div>
             </div>
+            <BookingModal
+                openModal={openModal}
+                modalOpen={modalOpen}
+                closeModal={closeModal}
+                setModalOpen={setModalOpen}
+                submitHandler={submitHandler}
+                treatment={treatment}
+                startDate={startDate} />
         </div >
     );
 }

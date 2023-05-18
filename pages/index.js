@@ -28,13 +28,7 @@ export default function Home() {
         <Appointment />
         <Testimonial />
         <ContactUs />
-        {/* <Banner />
-        <Card />
-        <Service />
-        <SecondBanner />
-        <Appointment />
-        <Testimonial />
-        <ContactUs /> */}
+
       </main>
     </>
   )
