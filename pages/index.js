@@ -7,6 +7,7 @@ import SecondBanner from './../components/home/secondBanner/SecondBanner';
 import Appointment from './../components/home/appointment/Appointment';
 import Testimonial from './../components/home/testimonial/Testimonial';
 import ContactUs from './../components/home/contactUs/ContactUs';
+import ProtectedPage from './page/protectedPage/ProtectedPage';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,13 +22,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="px-5">
-        <Banner />
-        <Card />
-        <Service />
-        <SecondBanner />
-        <Appointment />
-        <Testimonial />
-        <ContactUs />
+        <ProtectedPage>
+          <Banner />
+          <Card />
+          <Service />
+          <SecondBanner />
+          <Appointment />
+          <Testimonial />
+          <ContactUs />
+        </ProtectedPage>
 
       </main>
     </>

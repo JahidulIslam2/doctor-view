@@ -1,9 +1,29 @@
-import { useState } from "react";
-import DrAppointment from './../drAppointment/DrAppointment';
+import { useContext, useState } from "react";
+import Link from "next/link";
+import { AuthProvider } from "../../../components/firebaseAuth/FirebaseAuth";
+import { toast } from "react-toastify";
+
 
 
 const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
+    const { user, logOutAccount } = useContext(AuthProvider)
+
+
+    // Login logOut button condition
+    const logOutHandler = () => {
+
+        if (confirm("Are you sure you want to log out")) {
+
+            logOutAccount()
+                .then(() => {
+                    toast.warning("logout successful")
+                })
+                .catch(err => console.log(err))
+        } else {
+            return
+        }
+    }
 
     return (
 
@@ -11,9 +31,9 @@ const Navbar = () => {
             <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
                 <div>
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                        <a href="/">
+                        <Link href="/">
                             <h2 className="text-2xl font-bold">LOGO</h2>
-                        </a>
+                        </Link>
                         <div className="md:hidden">
                             <button
                                 className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
@@ -59,56 +79,68 @@ const Navbar = () => {
                     >
                         <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                             <li>
-                                <a
+                                <Link
                                     className="text-darkblue transition hover:text-darkblue/75"
                                     href="/"
                                 >
                                     Home
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
-                                <a
+                                <Link
                                     className="text-darkblue transition hover:text-darkblue/75"
                                     href="/"
                                 >
                                     About
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
-                                <a
+                                <Link
                                     className="text-darkblue transition hover:text-darkblue/75 focus:underline
                                     active:underline active:text-primary"
-                                    href="page/drAppointment/DrAppointment"
+                                    href="/page/drAppointment/DrAppointment"
                                 >
                                     Appointment
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
-                                <a
+                                <Link
                                     className="text-darkblue transition hover:text-darkblue/75"
                                     href="/"
                                 >
                                     Services
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
-                                <a
+                                <Link
                                     className="text-darkblue transition hover:text-darkblue/75"
                                     href="/"
                                 >
                                     Blog
-                                </a>
+                                </Link>
                             </li>
-                            <li>
-                                <a
-                                    className="rounded-md bg-primary text-white px-5 py-2.5 text-sm font-medium  shadow"
-                                    href="page/loginPage/LoginPage" >
-                                    Login
-                                </a>
+                            {/* LogIn LogOut Button */}
+                            <li>{
+                                user?.email ?
+                                    <Link
+                                        className="rounded-md bg-red opacity-85 hover:opacity-70 focus:opacity-70 text-white px-5 py-2.5 text-sm font-medium  shadow"
+                                        onClick={logOutHandler} href="">
+                                        Logout
+                                    </Link>
+                                    :
+                                    <Link
+                                        className="rounded-md bg-primary text-white px-5 py-2.5 text-sm font-medium  shadow"
+                                        href="/page/loginPage/LoginPage" >
+                                        Login
+                                    </Link>
+
+
+
+                            }
                             </li>
                         </ul>
                     </div>

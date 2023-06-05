@@ -1,9 +1,30 @@
 import Image from "next/image";
 import bgImg from "../../../public/assets/images/bgSignIn.jpg"
-
+import Link from "next/link"
+import SignUpPage from './../signUpPage/SignUpPage';
+import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { AuthProvider } from "../../../components/firebaseAuth/FirebaseAuth";
+import { toast } from "react-toastify";
 
 
 const LoginPage = () => {
+    const { signInWithEmail, signInWithGoogle } = useContext(AuthProvider)
+
+    const { register, handleSubmit, formState: { errors } } = useForm()
+
+
+    const handleForm = (data) => {
+        signInWithEmail(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+                toast.success("Login successful")
+            }).catch(err => console.log(err))
+    }
+
+
+
     return (
 
         <div className="relative flex flex-col items-center justify-center min-h-screen ">
@@ -12,20 +33,30 @@ const LoginPage = () => {
             </div>
             <div className="relative space-y-6 max-w-md w-full px-6 py-12 bg-gradient-to-r from-darkblue to-purple shadow-lg rounded-md">
                 <h2 className="text-3xl  text-white font-bold mb-6 text-center ">Login</h2>
+
+
                 {/* form */}
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit(handleForm)} className="space-y-4">
                     <div>
                         <label htmlFor="email" className="block text-white text-lg font-medium ">Email</label>
-                        <input type="email" name="email" autoComplete="email" className="mt-1 focus:ring-bubble-gum focus:border-midnight block w-full shadow-md text-lg  border border-x-darkblue rounded-md  py-2 px-2" placeholder="Enter Your Email" />
+                        <input {...register("email", { required: "Input field required", maxLength: 20 })} aria-invalid={errors.email ? "true" : "false"}
+                            type="email" autoComplete="email" className="mt-1 focus:ring-bubble-gum focus:border-midnight block w-full shadow-md text-lg  border border-x-darkblue rounded-md  py-2 px-2" placeholder="Enter Your Email" />
+                        {/* errors alert */}
+
+                        {errors.email && <p role="alert" className=" text-sm text-red">{errors.email?.message}</p>}
                     </div>
                     <div >
                         <label htmlFor="password" className="block text-white text-lg font-medium ">Password</label>
-                        <input type="password" name="password" autoComplete="current-password" className="mt-1 focus:ring-bubble-gum focus:border-midnight block w-full shadow-md text-lg  border border-x-darkblue rounded-md  py-2 px-2" placeholder="Enter Your Password" />
+                        <input {...register("password", { required: "Input field required", maxLength: 20 })}
+                            aria-invalid={errors.password ? "true" : "false"} type="password" autoComplete="current-password" className="mt-1 focus:ring-bubble-gum focus:border-midnight block w-full shadow-md text-lg  border border-x-darkblue rounded-md  py-2 px-2" placeholder="Enter Your Password" />
+                        {/* errors alert */}
+                        {errors.password && <p role="alert" className="text-sm text-opacity-50 text-red">{errors.password?.message}</p>}
+
                         <label htmlFor="password" className="block text-bubble-gum opacity-70 text-sm font-medium ">Forgot password</label>
                     </div>
                     <div className="pt-4">
                         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-md text-md font-medium text-white bg-primary hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tahiti">LOGIN</button>
-                        <p className="mt-2 text-white text-center">NEW TO DOCTOR VIEW? create new Account</p>
+                        <p className="mt-2 text-white text-center">New to doctor view? <Link href={'/page/signUpPage/SignUpPage'} className="text-primary">Create new Account</Link></p>
                     </div>
                 </form>
                 <div className="flex items-center ">
@@ -33,7 +64,7 @@ const LoginPage = () => {
                     <span className="px-4 text-white">OR</span>
                     <div className="flex-grow border-t border-black"></div>
                 </div>
-                <div className="">
+                <div>
                     <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-md text-md font-medium text-white bg-bubble-gum hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tahiti">CONTINUE WITH GOOGLE</button>
                 </div>
             </div>
