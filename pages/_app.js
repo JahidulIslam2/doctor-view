@@ -4,6 +4,7 @@ import 'react-day-picker/dist/style.css';
 import AuthContextProvider from '../components/firebaseAuth/FirebaseAuth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectedPage from './page/protectedPage/ProtectedPage';
 
 
 export default function App({ Component, pageProps }) {

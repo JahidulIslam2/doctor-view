@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import Link from "next/link";
 import { AuthProvider } from "../../../components/firebaseAuth/FirebaseAuth";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 
 
@@ -9,7 +10,7 @@ const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
     const { user, logOutAccount } = useContext(AuthProvider)
 
-
+    const router = useRouter();
     // Login logOut button condition
     const logOutHandler = () => {
 
@@ -18,6 +19,7 @@ const Navbar = () => {
             logOutAccount()
                 .then(() => {
                     toast.warning("logout successful")
+                    router.push("/page/loginPage/LoginPage")
                 })
                 .catch(err => console.log(err))
         } else {

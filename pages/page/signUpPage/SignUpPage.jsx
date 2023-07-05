@@ -4,20 +4,47 @@ import Link from "next/link"
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthProvider } from "../../../components/firebaseAuth/FirebaseAuth";
+import { useRouter } from "next/router";
 
 
 const SignUpPage = () => {
-    const { createUserEmailAndPass } = useContext(AuthProvider)
+    const { createUserEmailAndPass, signInWithGoogle, updateUserInfo } = useContext(AuthProvider) //authentication functions
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    const router = useRouter();
+
     const formSubmit = (event) => {
-        createUserEmailAndPass(event.email, event.password)
+
+
+        createUserEmailAndPass(event.email, event.password)     //create user using email and password
             .then(result => {
                 const user = result.user;
                 console.log(user)
+                if (user) {
+                    router.push("/")
+                    const userInfo = {
+                        displayName: event.userName
+                    }
+                    updateUserInfo(userInfo)
+                        .then((result) => {
+                            console.log(result)
+                        }).catch(err => console.error(err))
+
+                }
             })
             .catch(error => console.log(error))
     }
+
+
+
+    const handleSignUpWithPopup = () => {                   //create account with google popup
+        signInWithGoogle()
+            .then(result => {
+                console.log(result)
+            }).catch(err => console.log(err))
+    }
+
+
 
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen ">
@@ -57,7 +84,7 @@ const SignUpPage = () => {
                     <div className="flex-grow border-t border-black"></div>
                 </div>
                 <div>
-                    <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-md text-md font-medium text-white bg-bubble-gum hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tahiti">CONTINUE WITH GOOGLE</button>
+                    <button onClick={handleSignUpWithPopup} type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-md text-md font-medium text-white bg-bubble-gum hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tahiti">CONTINUE WITH GOOGLE</button>
                 </div>
             </div>
 
